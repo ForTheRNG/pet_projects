@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <title>Space simulation</title>
+        </head>
+        <body>
+            <link rel='stylesheet' href='style.css'></link>
+            <div style='display:flex; flex-direction:row; height:100%;'>
+                <div id='creare'>
+                    <span>Introduce the number of dimensions for the space.</span>
+                    <br><input type='text' id='dim' value='2'></input><br>
+                    <span>Introduce the gravity constant of the space.</span>
+                    <br><input type='text' id='grav' value='0.5'></input><br>
+                    <span>Introduce the precision of the space. (The greater this number, the more calculations are done between frames.)</span>
+                    <br><input type='text' id='timefac' value='10'></input><br>
+                    <button onclick='setgenparam()'>Set parameters</button><br>
+                    <span>Introduce the number of randomly generated objects. The rest of the objects are expected to be introduced manually. Should this number be greater than the number of total objects, all objects will be randomly generated.</span>
+                    <br><input type='text' id='nobrg' value='2'></input><br>
+                    <span>Introduce the maximum coordinates allowed for randomly generated objects. (Values should be separated by comma.)</span>
+                    <br><input type='text' id='rrg' value='5,5'></input><br>
+                    <span>Introduce the maximum velocity allowed for randomly generated objects, split along coordonate axes. (Values should be separated by comma.)</span>
+                    <br><input type='text' id='vrg' value='2,2'></input><br>
+                    <span>Introduce the elasticity of randomly generated objects.</span>
+                    <br><input type='text' id='elrg' value='1'></input><br>
+                    <span>Introduce the maximum mass of randomly generated objects.</span>
+                    <br><input type='text' id='mrg' value='100'></input><br>
+                    <span>Introduce the maximum radius of randomly generated objects.</span>
+                    <br><input type='text' id='radrg' value='1'></input><br>
+                    <button onclick='setrandparam()'>Set parameters</button><br>
+                    <span>Introduce the coordinates of the object. (Values should be separated by comma.)</span>
+                    <br><input type='text' id='r' value='5,5'></input><br>
+                    <span>Introduce the velocity of the object, split along the coordonate axes. (Values should be separated by comma.)</span>
+                    <br><input type='text' id='v' value='2,2'></input><br>
+                    <span>Introduce the elasticity of the object.</span>
+                    <br><input type='text' id='el' value='1'></input><br>
+                    <span>Introduce the radius of the object.</span>
+                    <br><input type='text' id='rad' value='0.2'></input><br>
+                    <span>Introduce the mass of the object.</span>
+                    <br><input type='text' id='m' value='5'></input><br>
+                    <button onclick='pushobj()'>Add object</button><br>
+                    <button onclick="refresh()">New space</button><br>
+                </div>
+                <div id='sim'></div>
+            </div>
+            <script src='script.js'></script>
+        </body>
+</html>
