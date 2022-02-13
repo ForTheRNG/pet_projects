@@ -75,7 +75,7 @@ function main() {
             target.sum += mp3dur(buffer);
             target.remaining--;
         }
-        console.log("Total time: " + convertMSToTime(target.sum));
+        console.log("Total song time: " + convertMSToTime(target.sum));
     });
 }
 
