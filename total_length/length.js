@@ -1,7 +1,7 @@
 const songext = /\.mp3$/;
 const fs = require('fs');
 const path = require('path');
-const mp3dur = require('mp3-duration');
+const mp3dur = require('get-mp3-duration');
 
 /**
  * Explores recursively a directory and returns all the filepaths and
@@ -46,7 +46,7 @@ function filewalker(dir, done) {
 }
 
 function convertMSToTime(ms) {
-    let units = {day: 864e2, hour: 36e2, minute: 60, second: 1};
+    let units = {day: 864e5, hour: 36e5, minute: 6e4, second: 1e3};
     let str = Object.entries(units).reduce((r, [unit, multi]) => {
         if (ms >= multi) {
             let count = ms / multi | 0;
@@ -71,16 +71,11 @@ function main() {
         let target = {remaining: songs.length, sum: 0};
         for (let song of songs) {
             console.log("Starting ops on file " + song);
-            mp3dur(song, (err, dur) => {
-                if (err) throw err;
-                console.log("Finishing ops on file " + song);
-                target.remaining--;
-                target.sum += dur;
-                if (target.remaining == 0) {
-                    console.log("Total time: " + convertMSToTime(target.sum));
-                }
-            });
+            let buffer = fs.readFileSync(song);
+            target.sum += mp3dur(buffer);
+            target.remaining--;
         }
+        console.log("Total time: " + convertMSToTime(target.sum));
     });
 }
 
