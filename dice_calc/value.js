@@ -65,7 +65,7 @@ class Value {
                     this.numch += x.val.numch * x.ch;
                     for (let y of x.val.bool) {
                         let elem = {val: y.val, ch: y.ch * x.ch};
-                        this.num.push(elem);
+                        this.bool.push(elem);
                     }
                     this.boolch += x.val.boolch * x.ch;
                 }
@@ -87,7 +87,7 @@ class Value {
             this.numch = val.numch;
             for (let y of val.bool) {
                 let elem = {val: y.val, ch: y.ch};
-                this.num.push(elem);
+                this.bool.push(elem);
             }
             this.boolch = val.boolch;
         }
