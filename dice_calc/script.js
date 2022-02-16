@@ -11,13 +11,13 @@ let tokenreg = /\s*([TtFf])[a-zA-Z]*\s*|\s*(\d+)\s*|\s*([$+\-*/\(\)dD:><!&|])\s*
 let opers = [
     {
         sign: "$",
-        prec: 13,
+        prec: 14,
         num: 1,
         compute: (nodes, vars) => vars[nodes[0].compute().choose()].choose(),
         analyze: (nodes, vars) => vars[nodes[0].compute().choose()]
     },{
         sign: "d",
-        prec: 12,
+        prec: 13,
         num: 2,
         compute: (nodes) => {
             let a = nodes[0].compute(), b = nodes[1].compute();
@@ -54,8 +54,8 @@ let opers = [
         analyze: (nodes) => nodes[0].analyze().oper(nodes[1].analyze(), "*")
     },{
         sign: "-",
-        prec: 10,
-        num: 2,
+        prec: 12,
+        num: 1,
         compute: (nodes) => -nodes[0].compute(),
         analyze: (nodes) => nodes[0].analyze().oppose()
     },{
@@ -70,7 +70,9 @@ let opers = [
         num: 3,
         compute: (nodes) => nodes[0].compute() ? nodes[1].compute() : nodes[2].compute(),
         analyze: (nodes) => {
-            
+            let tf = nodes[0].analyze();
+            return new Value([{val: nodes[1].analyze(), ch: tf[0].val},
+                {val: nodes[1].analyze(), ch: tf[1].val}]);
         }
     }
 ];
@@ -117,30 +119,49 @@ class Expression {
             return r;
         });
         for (let i = 1; i < tokens.length - 1; i++) {
-            if (tokens[i] == "-" && /\D+/.test(tokens[i - 1])) {
-                tokens[i + 1] = "-" + tokens[i + 1];
-                tokens.splice(i, 1);
+            if (tokens[i] == "-" && /\d+/.test(tokens[i - 1])) {
+                tokens.splice(i, 0, "+");
             }
-        }
-        if (tokens[0] == "-") {
-            tokens.unshift("0");
         }
         let crnodes = [];
         let opstack = [];
         for (let i = 0; i < tokens.length; i++) {
-            if (/\D+/.test(tokens[i])) {
+            if (/\d+/.test(tokens[i])) {
                 crnodes.push(new ExpNode(new Value(parseInt(tokens[i]))));
+            } else if (tokens[i] == "t" || tokens[i] == "f") {
+                crnodes.push(new ExpNode(new Value(tokens[i] == "t")));
             } else if (tokens[i] == "(") {
-                opstack.push("(");
+                opstack.push(tokens[i]);
             } else if (tokens[i] == ")") {
                 let oper = opstack.pop();
                 while (oper != "(") {
                     crnodes.push(new ExpNode(oper, crnodes.splice(-oper.num, oper.num), vars));
+                    top = opstack.pop();
                 }
-            } else if (tokens[i] == "-") {
-                opstack.push(opers.find(x => x.sign == "+"));
-                opstack.push(opers.find(x => x.sign == "-"));
+            } else {
+                let oper = opers.find(x => x.sign == tokens[i]);
+                if (typeof oper == "undefined") {
+                    oper = ":";
+                }
+                let top = opstack.pop();
+                while (typeof top != 'undefined' && top != "(" && top != "?" && top.prec >= oper.prec) {
+                    crnodes.push(new ExpNode(oper, crnodes.splice(-oper.num, oper.num), vars));
+                    top = opstack.pop();
+                }
+                if (typeof top == "string") {
+                    opstack.push(top);
+                }
+                if (tokens[i] == "?") {
+                    opstack.push("?");
+                } else {
+                    opstack.push(oper);
+                }
             }
         }
+        while (opstack.length > 0) {
+            let oper = opstack.pop();
+            crnodes.push(new ExpNode(oper, crnodes.splice(-oper.num, oper.num), vars));
+        }
+        this.topnode = crnodes[0];
     }
 }

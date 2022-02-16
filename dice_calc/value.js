@@ -36,6 +36,7 @@ class Value {
         if (typeof val == "number") {
             if (typeof size == "undefined") {
                 this.num = [{val: val, ch: 1}];
+                this.numch = 1;
             } else if (val > 0 && size > 0) {
                 let stdarr = [];
                 for (let i = 1; i <= size; i++) {
@@ -46,10 +47,14 @@ class Value {
                     die = die.oper(die, "+");
                     val--;
                 }
-                this = die;
+                this.num = die.num;
+                this.numch = die.numch;
+                this.bool = die.bool;
+                this.boolch = die.boolch;
             }
         } else if (typeof val == "boolean") {
             this.bool = [{val: val, ch: 1}];
+            this.boolch = 1;
         } else if (Array.isArray(val)) {
             for (let x of val) {
                 if (x.val.constructor.name == "Value") {
