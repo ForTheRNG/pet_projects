@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="data:,">
+        <title>AO3 RSS generator</title>
+    </head>
+    <body>
+        Does what it says on the tin: generates RSS feeds for AO3 works and series.
+        <br><br>
+        How to use:<ol>
+            <li>Get the AO3 work's link (like https://archiveofourown.org/works/9876543210/).</li>
+            <li>Isolate the relevant bit and add a little "ao3" in front (like /ao3/works/9876543210/).</li>
+            <li>Paste it after this page's address (like http://somedomain.com/ao3/works/9876543210/).</li>
+            <li>That link should give you an XML with all the required data! As in, your RSS
+            aggregator just needs the last link.</li>
+        </ol>
+        Same for series, really! Just isolate something along the lines of "/ao3/series/9876543210".
+        <br><br>
+        Note: Only feed one work/series at a time. Unfortunately, I am not smart enough to overlap a lot of feeds. Sorry.
+        <br><br>
+        Note: This program uses page crawling, and as such is fairly vulnerable to internal changes in the HTML. Hopefully
+        that doesn't happen anytime soon, but who knows.
+        <br><br>
+        You can grab the source code <a href="/sourcecode">here</a>! If you somehow stumble in here
+        and have a server you use for yourself, hosting there should make your RSS feed more reliable since
+        you control when the server is on! (You'll require Node to run the server, but probably no additional modules.)
+        (Please read the source code so you don't just start running worms, backdoors & who knows what else. It's not that
+        long.)
+    </body>
+</html>
