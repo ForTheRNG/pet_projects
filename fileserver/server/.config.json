@@ -1,0 +1,12 @@
+{
+    "ssl" : {
+        "key_file": "verif.key",
+        "cert_file": "verif.cert",
+        "pass_phrase": "radu9876"
+    },
+    "port": 443,
+    "storage_paths": [
+        "D:\\stocare"
+    ],
+    "user_data": "users.json"
+}
