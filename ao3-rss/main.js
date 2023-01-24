@@ -234,6 +234,12 @@ class Model {
  * @type {Model[]}
  */
 const modelarr = [
+    new Model(/sourcecode/g, async (_, response) => {
+        zip = await filesys.readFile("source.zip");
+        funcs.debug("serving source code");
+        response.setHeader('content-disposition', 'attachment; filename="source.zip"')
+        funcs.fullresp(response, 'application/octet-stream', zip);
+    }),
     new Model(/icon/g, async (_, response) => {
         response.writeHead(404, "File does not exist");
         return "";
