@@ -148,7 +148,7 @@ const archiveofourown = {
             /<li><a href="([a-z0-9/]+)">([^\n]+)<\/a> <[^\n<>]+>\(([0-9]{4}\-[0-9]{2}\-[0-9]{2})\)<\/span><\/li>\n/g);
         itemarr = itemarr.map((x) => { return {
             title: x[2],
-            link: statics.ao3link + x[1] + '/#workskin?view_adult=true',
+            link: statics.ao3link + x[1] + '#workskin?view_adult=true',
             date: new Date(x[3] + 'T23:59:59.999Z'),
             guid: x[1].match(/[0-9]+/g)[1]
         };})
