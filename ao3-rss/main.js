@@ -2,12 +2,13 @@ const http = require("http");
 const https = require("https");
 const filesys = require("fs/promises");
 const URL = require("url").URL;
+const process = require("process");
 
 // Change things here if you feel like it
 const statics = {
     generator: "ForTheRNG",
     debug: 0,
-    port: 8080,
+    port: process.env.PORT || 8080,
     ao3link: "https://archiveofourown.org"
 };
 
@@ -69,7 +70,7 @@ const funcs = {
             + "Latest updates of \"" + title + "\"</description>\n<language>"
             + lang + "</language>\n<generator>"
             + statics.generator + "</generator>\n";
-        itemarr = itemarr.sort((x, y) => x.guid - y.guid).slice(0, 10);
+        itemarr = itemarr.sort((x, y) => y.guid - x.guid).slice(0, 10);
         for (let item of itemarr)
             res += funcs.itemrss(item.title, item.link, item.guid, item.date);
         return res + "</channel>\n</rss>";
